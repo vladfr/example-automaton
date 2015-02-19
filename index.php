@@ -5,9 +5,10 @@ ini_set('display_errors', true);
 
 function __autoload($class)
 {
-	include ('src/' . str_replace('\\', '/', $class) . '.php');
+    $path = str_replace('MS\\Automaton\\', 'src/', $class);
+    $path = str_replace('\\', '/', $path);
+    include($path . '.php');
 }
 
-$app = new ExampleApp();
-$state = $app->boot();
-$app->run($state);
+$app = new Example\App();
+$app->run();
