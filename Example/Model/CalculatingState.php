@@ -22,7 +22,7 @@ class CalculatingState extends AbstractState implements ValidState
 
     public function entryCriteria($payload)
     {
-        return $payload['flags']['calculated'];
+        return !$payload['flags']['calculated'];
     }
 
     public function exitCriteria($payload)
