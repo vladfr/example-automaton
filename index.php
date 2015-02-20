@@ -8,5 +8,6 @@ define('BASE_PATH', __DIR__);
 
 $loader = require 'vendor/autoload.php';
 
-$app = new Example\App();
+$app_class_name = $argv[1] . "\App";
+$app = new $app_class_name();
 $app->run();

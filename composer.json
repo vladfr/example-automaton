@@ -6,6 +6,7 @@
 	  "psr-4": {
 		"MS\\Automaton\\": "src/",
 		"Example\\": "Example/",
+        "Api\\": "Api/",
 		"": "src/"
 	  }
   }
