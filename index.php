@@ -3,12 +3,10 @@
 error_reporting(E_ALL);
 ini_set('display_errors', true);
 
-function __autoload($class)
-{
-    $path = str_replace('MS\\Automaton\\', 'src/', $class);
-    $path = str_replace('\\', '/', $path);
-    include($path . '.php');
-}
+define('DS', DIRECTORY_SEPARATOR);
+define('BASE_PATH', __DIR__);
+
+$loader = require 'vendor/autoload.php';
 
 $app = new Example\App();
 $app->run();
