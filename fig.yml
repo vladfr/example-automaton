@@ -1,0 +1,20 @@
+mongo:
+  image: "mongo"
+  volumes_from:
+    - data
+  ports:
+    - "27017:27017"
+
+data:
+  image: "busybox"
+  volumes:
+    - /data/db
+
+php:
+  build: '.'
+  links:
+    - mongo
+  ports:
+   - "80:80"
+  volumes:
+    - .:/var/www/html
