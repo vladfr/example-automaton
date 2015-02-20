@@ -3,9 +3,9 @@
 namespace Api;
 
 use ArrayObject;
-
-use Example\Model\StartState;
-use Example\Service\Process;
+use Api\Http\Model\Payload as HttpPayload;
+use Api\Http\Model\StartState;
+use Api\Http\Service\Process;
 
 class App
 {
@@ -14,26 +14,19 @@ class App
         /**
          * Preparing payload
          */
-        $payload = new ArrayObject(
-            array(
-                'data' => array(),
-                'flags' => array(
-                    'calculated' => null,
-                    'synchronized' => null,
-                ),
-            )
-        );
+        $httpPayload = new HttpPayload();
 
         /**
          * Preparing initial state
          */
         $state = new StartState();
-        $state->setPayload($payload);
+        $state->setPayload($httpPayload);
 
         /**
          * Running process.
          */
         $process = new Process();
+        ob_start();
         $process->run($state);
     }
 }

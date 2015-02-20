@@ -10,8 +10,9 @@ class AbstractState extends Exception
     public function __construct()
     {
         if (!empty(static::$transitions)) {
+
+            $transitions = array();
             foreach (static::$transitions as $class) {
-                $transitions = array();
                 if (!is_string($class) and is_object($class)) {
                     $class = get_class($class);
                 }
@@ -19,8 +20,8 @@ class AbstractState extends Exception
                     AbstractState::$transitions[$class] = new $class();
                 }
                 $transitions[$class] = AbstractState::$transitions[$class];
-                static::$transitions = $transitions;
             }
+            static::$transitions = $transitions;
         }
     }
 
@@ -84,7 +85,7 @@ class AbstractState extends Exception
         $transitions = $this->getTransitions();
         if (!isset($transitions[$transition])) {
             $invalidState = new InvalidState();
-            $invalidState::$description = 'The requested transition is not allowed';
+            $invalidState::$description = 'The requested transition is not allowed: '.get_class($this).' to '.get_class($transition);
             throw $invalidState;
         }
         $transition = $transitions[$transition];
@@ -94,8 +95,9 @@ class AbstractState extends Exception
         if (isset($criteria['exit'])) {
             foreach ($criteria['exit'] as $exitCriteria) {
                 $exitCriteria[0] = $this;
-                if ($exitCriteria($this->getPayload()) !== true) {
+                if (is_callable($exitCriteria) && $exitCriteria($this->getPayload()) !== true) {
                     $invalidState = new InvalidState();
+                    $invalidState::$name = get_class($this);
                     $invalidState::$description = 'The exit criteria were not met.';
                     throw $invalidState;
                 }
@@ -106,8 +108,9 @@ class AbstractState extends Exception
         if (isset($criteria['entry'])) {
             foreach ($criteria['entry'] as $entryCriteria) {
                 $entryCriteria[0] = $transition;
-                if ($entryCriteria($this->getPayload()) !== true) {
+                if (is_callable($entryCriteria) && $entryCriteria($this->getPayload()) !== true) {
                     $invalidState = new InvalidState();
+                    $invalidState::$name = get_class($transition);
                     $invalidState::$description = 'The entry criteria were not met.';
                     throw $invalidState;
                 }

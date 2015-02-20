@@ -7,24 +7,35 @@ use MS\Automaton\Model\Interfaces\InvalidState;
 
 abstract class Process
 {
-    protected static $exitState;
+    protected $exitState;
+
+    public function getExitState()
+    {
+        return $this->exitState;
+    }
 
     public function run(ValidState $state)
     {
         try {
-            while (true) {
+            $i=0; $currentState = null;
+            while ($i <= 10) {
                 try {
-                    echo $state->getName() . ': ' . $state->getDescription() . "<br/>\n";
-
+                    if (get_class($state) === $currentState) {
+                        $i++;
+                    }
+                    echo get_class($state) . ': ' . $state->getDescription() . "<br/>\n";
+                    $currentState = get_class($state);
                     $state->execute();
                 } catch (ValidState $state) {
-                    if (get_class($state) === static::$exitState OR is_subclass_of($state, static::$exitState)) {
+                    if (get_class($state) === $this->exitState OR is_subclass_of($state, $this->exitState)) {
+                        echo get_class($state) . "<br/>\n";
+                        $state->execute();
                         break;
                     }
                 }
             }
         } catch (InvalidState $e) {
-            echo $state->getName() . ': ' . $state->getDescription() . "<br/>\n";
+            echo $e->getName() . ': ' . $state->getDescription() . "<br/>\n";
 
             return;
         }
