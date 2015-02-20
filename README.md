@@ -3,7 +3,7 @@
 ## Docker run
 1. Get [boot2docker](http://boot2docker.io)
 2. [Install fig](http://fig.sh)
-
+3. Use it!
 ```
 > $(boot2docker shellinit)
 > fig up
@@ -13,7 +13,7 @@
 
 ## REST Api example
 
-http://192.168.59.103/index.php/image/index
+http://192.168.59.103/index.php/image/index    
 No auth, missing transition
 
 http://192.168.59.103/index.php/image/index?user=vlad    
